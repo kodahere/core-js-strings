@@ -471,8 +471,8 @@ function invertCase(str) {
  *   getStringFromTemplate('John','Doe') => 'Hello, John Doe!'
  *   getStringFromTemplate('Chuck','Norris') => 'Hello, Chuck Norris!'
  */
-function getStringFromTemplate(/* firstName, lastName */) {
-  throw new Error('Not implemented');
+function getStringFromTemplate(firstName, lastName) {
+  return `Hello, ${firstName} ${lastName}!`;
 }
 
 /**
@@ -485,8 +485,17 @@ function getStringFromTemplate(/* firstName, lastName */) {
  *   extractNameFromTemplate('Hello, John Doe!') => 'John Doe'
  *   extractNameFromTemplate('Hello, Chuck Norris!') => 'Chuck Norris'
  */
-function extractNameFromTemplate(/* value */) {
-  throw new Error('Not implemented');
+function extractNameFromTemplate(value) {
+  const prefix = 'Hello, ';
+  const suffix = '!';
+
+  if (!value.startsWith(prefix) || !value.endsWith(suffix)) {
+    return '';
+  }
+
+  const name = value.substring(prefix.length, value.length - suffix.length);
+
+  return name;
 }
 
 /**
@@ -500,8 +509,14 @@ function extractNameFromTemplate(/* value */) {
  *   unbracketTag('<span>') => 'span'
  *   unbracketTag('<a>') => 'a'
  */
-function unbracketTag(/* str */) {
-  throw new Error('Not implemented');
+function unbracketTag(str) {
+  if (!str.startsWith('<') || !str.endsWith('>')) {
+    return str;
+  }
+
+  const tagName = str.substring(1, str.length - 1);
+
+  return tagName;
 }
 
 /**
@@ -519,8 +534,29 @@ function unbracketTag(/* str */) {
  *   ],
  *   'info@gmail.com' => ['info@gmail.com']
  */
-function extractEmails(/* str */) {
-  throw new Error('Not implemented');
+function extractEmails(str) {
+  const emails = [];
+  let currentEmail = '';
+  let i = 0;
+
+  while (i < str.length) {
+    const char = str[i];
+
+    if (char === ';') {
+      emails.push(currentEmail);
+      currentEmail = '';
+    } else {
+      currentEmail += char;
+    }
+
+    i += 1;
+  }
+
+  if (currentEmail) {
+    emails.push(currentEmail);
+  }
+
+  return emails;
 }
 
 /**
@@ -539,8 +575,35 @@ function extractEmails(/* str */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+  let result = '';
+  let i = 0; 
+
+  while (i < str.length) {
+    const char = str[i];
+
+    if (alphabet.includes(char)) {
+      
+      const baseIndex = alphabet.indexOf(char);
+      const rotatedIndex = (baseIndex + 13) % 26;
+      const rotatedChar = alphabet[rotatedIndex];
+      result += rotatedChar;
+    } else if (alphabet.toUpperCase().includes(char)) {
+      
+      const baseIndex = alphabet.toUpperCase().indexOf(char);
+      const rotatedIndex = (baseIndex + 13) % 26;
+      const rotatedChar = alphabet.toUpperCase()[rotatedIndex];
+      result += rotatedChar;
+    } else {
+      
+      result += char;
+    }
+
+    i += 1; 
+  }
+
+  return result;
 }
 
 /**
@@ -567,8 +630,20 @@ function encodeToRot13(/* str */) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+function getCardId(value) {
+  const suits = ['♣', '♦', '♥', '♠'];
+  const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+
+  if (!value.match(/^[A-Z]\u2660-\u2663$/)) {
+    return -1;  
+  }
+
+  const rankIndex = ranks.indexOf(value[0]);
+  const suitIndex = suits.indexOf(value[1]);
+
+  const cardIndex = suitIndex * ranks.length + rankIndex;
+
+  return cardIndex;
 }
 
 module.exports = {
