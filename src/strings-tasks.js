@@ -578,29 +578,26 @@ function extractEmails(str) {
 function encodeToRot13(str) {
   const alphabet = 'abcdefghijklmnopqrstuvwxyz';
   let result = '';
-  let i = 0; 
+  let i = 0;
 
   while (i < str.length) {
     const char = str[i];
 
     if (alphabet.includes(char)) {
-      
       const baseIndex = alphabet.indexOf(char);
       const rotatedIndex = (baseIndex + 13) % 26;
       const rotatedChar = alphabet[rotatedIndex];
       result += rotatedChar;
     } else if (alphabet.toUpperCase().includes(char)) {
-      
       const baseIndex = alphabet.toUpperCase().indexOf(char);
       const rotatedIndex = (baseIndex + 13) % 26;
       const rotatedChar = alphabet.toUpperCase()[rotatedIndex];
       result += rotatedChar;
     } else {
-      
       result += char;
     }
 
-    i += 1; 
+    i += 1;
   }
 
   return result;
@@ -632,10 +629,24 @@ function encodeToRot13(str) {
  */
 function getCardId(value) {
   const suits = ['♣', '♦', '♥', '♠'];
-  const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+  const ranks = [
+    'A',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    'J',
+    'Q',
+    'K',
+  ];
 
   if (!value.match(/^[A-Z]\u2660-\u2663$/)) {
-    return -1;  
+    return -1;
   }
 
   const rankIndex = ranks.indexOf(value[0]);
